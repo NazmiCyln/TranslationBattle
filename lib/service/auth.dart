@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,12 +24,38 @@ class AuthService {
     var user = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
-    await _firestore
-        .collection("Person")
-        .doc(user.user.uid)
-        .set({'userName': name, 'nick': nick, 'email': email});
+    await _firestore.collection("Person").doc(user.user.uid).set({
+      'userName': name,
+      'nick': nick,
+      'email': email,
+      'elo': 200,
+      'durum': false
+    });
 
     return user.user;
   }
 
+  Future<User> guncelle(String passwordU, String nick, String nameU) async {
+    final user = await FirebaseAuth.instance.currentUser;
+    final cred =
+        EmailAuthProvider.credential(email: user.email, password: "cccccc");
+
+    user.reauthenticateWithCredential(cred).then((value) {
+      user.updatePassword(passwordU).then((value) {
+        Fluttertoast.showToast(msg: "t.");
+      });
+    });
+
+    DocumentReference veriGuncellemeYolu =
+        _firestore.collection("Person").doc(_auth.currentUser.uid);
+
+    Map<String, dynamic> guncellenecekVeri = {
+      "userName": nameU,
+      "nick": nick,
+    };
+
+    veriGuncellemeYolu.update(guncellenecekVeri).whenComplete(() {
+      Fluttertoast.showToast(msg: "Guncellendi.");
+    });
+  }
 }
