@@ -9,9 +9,9 @@ import 'package:myfirsproje/service/auth.dart';
 import 'Finish.dart';
 
 class Home extends StatefulWidget {
-  String homekullaniciAdi;
+  String homekullaniciAdi, odaID;
 
-  Home({this.homekullaniciAdi});
+  Home({this.homekullaniciAdi, this.odaID});
 
   @override
   _HomeState createState() => _HomeState();
@@ -86,59 +86,65 @@ class _HomeState extends State<Home> {
       } else {
         userElo = userElo - 5;
       }
+      //İki kullanıcı karşılaştırma ekranı
+      FirebaseFirestore.instance
+          .collection("Games")
+          .doc(widget.odaID)
+          .get()
+          .then((value) {
+        if (value[1]["totalScore"] > value[0]["totalScore"]) {
+          print("2. kullanıcı kazandı");
+        } else if (value[1]["totalScore"] == value[0]["totalScore"]) {
+          print("berabere");
+        } else
+          print("2. kullanıcı kazandı");
+      });
+      //Test bitince kullanılan oda siliniyor
+      FirebaseFirestore.instance
+          .collection("Games")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .delete();
 
       //  Kulanıcının test sonuçlarını firebase'e kaydediyoruz
       final fireStore = FirebaseFirestore.instance;
-      CollectionReference firebaseRef = fireStore
-          .collection("Users")
-          .doc("ID")
-          .collection(FirebaseAuth.instance.currentUser.uid);
-      Map<String, dynamic> resultsData = {
-        'kullanıcıAdi': widget.homekullaniciAdi,
-        'totalScore': _totalScore,
-        'elo': userElo,
-        'tarih': formattedDate,
-        'süre': timer.tick,
-      };
-      firebaseRef.doc(formattedDate).set(resultsData);
+      // CollectionReference firebaseRef = fireStore
+      //     .collection("Users")
+      //     .doc("ID")
+      //     .collection(FirebaseAuth.instance.currentUser.uid);
+      // Map<String, dynamic> resultsData = {
+      //   'kullanıcıAdi': widget.homekullaniciAdi,
+      //   'totalScore': _totalScore,
+      //   'elo': userElo,
+      //   'tarih': formattedDate,
+      //   'süre': timer.tick,
+      // };
+      // firebaseRef.doc(formattedDate).set(resultsData);
       fireStore
           .collection('Person')
           .doc(FirebaseAuth.instance.currentUser.uid)
           .update({'elo': userElo});
 
-      Map<String, dynamic> resultCevap = {
-        'totalscore': _totalScore,
-        'nick': widget.homekullaniciAdi,
-        '1': cevaplar[0],
-        '2': cevaplar[1],
-        '3': cevaplar[2],
-        '4': cevaplar[3],
-        '5': cevaplar[4],
-        '6': cevaplar[5],
-        '7': cevaplar[6],
-        '8': cevaplar[7],
-        '9': cevaplar[8],
-        '10': cevaplar[9],
-      };
-      fireStore
-          .collection("Games")
-          .doc("1")
-          .collection(FirebaseAuth.instance.currentUser.uid)
-          .doc('Answers')
-          .set(resultCevap);
-    });
-
-    // Sonuç ekranını açıyoruz
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Finish(
-          finishKullaniciAdi: widget.homekullaniciAdi,
-          totalScore: _totalScore,
-        ),
-      ),
-    );
-  }
+      // Map<String, dynamic> resultCevap = {
+      //   'totalscore': _totalScore,
+      //   'nick': widget.homekullaniciAdi,
+      //   '1': cevaplar[0],
+      //   '2': cevaplar[1],
+      //   '3': cevaplar[2],
+      //   '4': cevaplar[3],
+      //   '5': cevaplar[4],
+      //   '6': cevaplar[5],
+      //   '7': cevaplar[6],
+      //   '8': cevaplar[7],
+      //   '9': cevaplar[8],
+      //   '10': cevaplar[9],
+      // };
+      // fireStore
+      //     .collection("Games")
+      //     .doc("1")
+      //     .collection(FirebaseAuth.instance.currentUser.uid)
+      //     .doc('Answers')
+      //     .set(resultCevap);
+    });}
 
   void _nextQuestion() {
     setState(() {
