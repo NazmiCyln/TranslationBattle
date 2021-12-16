@@ -29,6 +29,7 @@ class AuthService {
     var user = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
+    String resimYolu = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
 
     await _firestore.collection("Person").doc(user.user.uid).set({
       'userName': name,
@@ -36,7 +37,7 @@ class AuthService {
       'email': email,
       'elo': 200,
       'durum': false,
-      'resim': null,
+      'resim': resimYolu,
     });
 
     return user.user;

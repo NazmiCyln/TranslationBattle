@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myfirsproje/home.dart';
 import 'package:myfirsproje/main.dart';
+import 'package:myfirsproje/rankedQueue.dart';
 import 'package:myfirsproje/ranks.dart';
 import 'package:myfirsproje/service/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -89,8 +90,7 @@ class _MenuState extends State<Menu> {
                                 height: 50,
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(2, 0, 220, 0),
+                                padding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.push(
@@ -118,27 +118,11 @@ class _MenuState extends State<Menu> {
                                   ),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  _authService.signOut();
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => GirisEkrani()));
-                                },
-                                child: Text(
-                                  "Çıkış",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          padding: const EdgeInsets.fromLTRB(0, 2, 0, 5),
                           child: Image.network(
                             "https://pbs.twimg.com/media/CktwjRtWkAAm3Dc.png",
                             width: 150.0,
@@ -198,10 +182,15 @@ class _MenuState extends State<Menu> {
                         ),
                         GestureDetector(
                           onTap: () {
+                            var odaID = sirayaGir(widget.kullaniciAdi);
+                            Duration(seconds: 3).inSeconds;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Ranks(),
+                                builder: (context) => rankedQueue(
+                                  homekullaniciAdi: widget.kullaniciAdi,
+                                  odaID: odaID,
+                                ),
                               ),
                             );
                           },
@@ -334,7 +323,7 @@ class _KullaniciGecmisState extends State<KullaniciGecmis> {
               itemCount: veri.length,
               itemBuilder: (context, index) {
                 return Container(
-                  margin: const EdgeInsets.fromLTRB(12, 5, 12, 1),
+                  margin: const EdgeInsets.fromLTRB(9, 5, 9, 1),
                   height: 65,
                   decoration: BoxDecoration(
                     color: Color(0xFFAEE095),
@@ -404,103 +393,197 @@ class _ChoiseLevelState extends State<ChoiseLevel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Color(0xFF272837),
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Lütfen oynamak istediğiniz seviyeyi seçin",
+      backgroundColor: Color(0xFF303247),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Levels",
                 style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.white,
-                    fontFamily: 'Manrope',
-                    fontWeight: FontWeight.bold),
-              ),
-              Text("                                            "
-                  ""
-                  "       "),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    fixedSize: Size(250, 60),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50))),
-                child: Text(
-                  "Kolay",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: Colors.white,
-                      fontFamily: 'Manrope',
-                      decoration: TextDecoration.none),
+                  fontFamily: "yazi",
+                  fontSize: 45,
+                  color: Color(0xFFC9F3F3),
                 ),
-                onPressed: () {
-                  var odaID = sirayaGir(widget.lKullanici);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(
-                        homekullaniciAdi: widget.lKullanici,
-                        odaID: odaID,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF00FFFA).withOpacity(.7),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xE404805A).withOpacity(.35),
+                              blurRadius: 40,
+                              spreadRadius: 2)
+                        ]),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Home(
+                              homekullaniciAdi: widget.lKullanici,
+                            ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF1A8B8B),
+                        fixedSize: (Size(75, 75)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        ),
+                      ),
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/3564/3564180.png",
+                        height: 45,
                       ),
                     ),
-                  );
-                },
-              ),
-              Text("              "),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    fixedSize: Size(250, 60),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50))),
-                child: Text(
-                  "Orta",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: Colors.white,
-                      decoration: TextDecoration.none),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(
-                        homekullaniciAdi: widget.lKullanici,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF00FFFA).withOpacity(.7),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xE404805A).withOpacity(.35),
+                              blurRadius: 40,
+                              spreadRadius: 2)
+                        ]),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF1A8B8B),
+                        fixedSize: (Size(75, 75)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        ),
+                      ),
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/641/641693.png",
+                        height: 40,
                       ),
                     ),
-                  );
-                },
-              ),
-              Text("              "),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    fixedSize: Size(250, 60),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50))),
-                child: Text(
-                  "Zor",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                      color: Colors.white,
-                      fontFamily: 'Manrope',
-                      decoration: TextDecoration.none),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Home(
-                        homekullaniciAdi: widget.lKullanici,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF00FFFA).withOpacity(.7),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xE404805A).withOpacity(.35),
+                              blurRadius: 40,
+                              spreadRadius: 2)
+                        ]),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF1A8B8B),
+                        fixedSize: (Size(75, 75)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        ),
+                      ),
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/641/641693.png",
+                        height: 40,
                       ),
                     ),
-                  );
-                },
-              )
-            ],
-          ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF00FFFA).withOpacity(.7),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xE404805A).withOpacity(.35),
+                              blurRadius: 40,
+                              spreadRadius: 2)
+                        ]),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF1A8B8B),
+                        fixedSize: (Size(75, 75)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        ),
+                      ),
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/641/641693.png",
+                        height: 120,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF00FFFA).withOpacity(.7),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xE404805A).withOpacity(.35),
+                              blurRadius: 40,
+                              spreadRadius: 2)
+                        ]),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF1A8B8B),
+                        fixedSize: (Size(75, 75)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        ),
+                      ),
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/641/641693.png",
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xFF00FFFA).withOpacity(.7),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color(0xE404805A).withOpacity(.35),
+                              blurRadius: 40,
+                              spreadRadius: 2)
+                        ]),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF1A8B8B),
+                        fixedSize: (Size(75, 75)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(38),
+                        ),
+                      ),
+                      child: Image.network(
+                        "https://cdn-icons-png.flaticon.com/512/641/641693.png",
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -608,7 +691,9 @@ class _achievementScreenState extends State<achievementScreen> {
                       color: Color(0xFFCD9D30),
                       border: Border.all(
                         width: 3,
-                        color: Color(0xFF000000),
+                        color: (user.email.contains(satirVerisi["email"]))
+                            ? Color(0xFF198E07)
+                            : Color(0xFF000000),
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -625,9 +710,9 @@ class _achievementScreenState extends State<achievementScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.photo,
-                                    size: 50,
+                                  Image.network(
+                                    satirVerisi["resim"],
+                                    height: 50,
                                   ),
                                 ],
                               ),
@@ -676,21 +761,7 @@ class hintScreen extends StatefulWidget {
 class _hintScreenState extends State<hintScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("Games").snapshots(),
-        builder: (context, veriler) {
-          var alinanVeri = veriler.data.docs;
-          for (int i = 0; i <= alinanVeri.length; i++) {
-            if (alinanVeri[i]["odaVisiblity"] == true) {
-              print(i);
-            }
-          }
-          return Text("asdasd");
-        },
-      ),
-    );
+    return Scaffold();
   }
 }
 
@@ -726,8 +797,25 @@ class _profileScreenState extends State<profileScreen> {
                   children: [
                     Column(
                       children: [
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            onPressed: () {
+                              _authService.signOut();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => GirisEkrani()));
+                            },
+                            icon: Icon(
+                              Icons.exit_to_app,
+                              color: Color(0xE4D0C5C5),
+                              size: 25,
+                            ),
+                          ),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
+                          padding: const EdgeInsets.fromLTRB(0, 13, 0, 30),
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
@@ -737,12 +825,15 @@ class _profileScreenState extends State<profileScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xff055884),
-                              fixedSize: Size(90, 90),
+                              fixedSize: Size(95, 95),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(60),
                               ),
                             ),
-                            child: Image.network(urlTutucu),
+                            child: Image.network(
+                              urlTutucu,
+                              height: 95,
+                            ),
                           ),
                         ),
                         Center(
@@ -953,6 +1044,35 @@ class _AvatarState extends State<Avatar> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      authService.resimAl("avatar2.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar2.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
                       authService.resimAl("avatar3.png").then((value) {
                         Navigator.push(
                             context,
@@ -962,6 +1082,727 @@ class _AvatarState extends State<Avatar> {
                     },
                     child: Image(
                       image: AssetImage("images/avatar3.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar4.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar4.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar5.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar5.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar6.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar6.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar7.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar7.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar8.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar8.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar9.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar9.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar10.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar10.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar11.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar11.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar12.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar12.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar13.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar13.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar14.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar14.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar15.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar15.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar16.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar16.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar17.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar17.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar18.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar18.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar19.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar19.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar20.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar20.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar21.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar21.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar22.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar22.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar23.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar23.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar24.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar24.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar25.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar25.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar26.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar26.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar27.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar27.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar28.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar28.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar29.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar29.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar30.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar30.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar31.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar31.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar32.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar32.png"),
                       height: 150,
                     ),
                     style: ElevatedButton.styleFrom(

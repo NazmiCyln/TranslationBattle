@@ -4,20 +4,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myfirsproje/Finish.dart';
 import 'package:myfirsproje/service/auth.dart';
 
-import 'Finish.dart';
-
-class Home extends StatefulWidget {
+class rankedQueue extends StatefulWidget {
   String homekullaniciAdi, odaID;
 
-  Home({this.homekullaniciAdi, this.odaID});
+  rankedQueue({this.homekullaniciAdi, this.odaID});
 
   @override
-  _HomeState createState() => _HomeState();
+  _rankedQueueState createState() => _rankedQueueState();
 }
 
-class _HomeState extends State<Home> {
+class _rankedQueueState extends State<rankedQueue> {
   List<Icon> _scoreTracker = [];
   int _questionIndex = 0;
   int _totalScore = 0;
@@ -50,13 +49,13 @@ class _HomeState extends State<Home> {
       _scoreTracker.add(
         isitcorrect
             ? Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              )
+          Icons.check_circle,
+          color: Colors.green,
+        )
             : Icon(
-                Icons.clear,
-                color: Colors.red,
-              ),
+          Icons.clear,
+          color: Colors.red,
+        ),
       );
       //  when the quiz ends
       if (_questionIndex + 1 == 10) {
@@ -107,43 +106,25 @@ class _HomeState extends State<Home> {
 
       //  Kulanıcının test sonuçlarını firebase'e kaydediyoruz
       final fireStore = FirebaseFirestore.instance;
-      // CollectionReference firebaseRef = fireStore
-      //     .collection("Users")
-      //     .doc("ID")
-      //     .collection(FirebaseAuth.instance.currentUser.uid);
-      // Map<String, dynamic> resultsData = {
-      //   'kullanıcıAdi': widget.homekullaniciAdi,
-      //   'totalScore': _totalScore,
-      //   'elo': userElo,
-      //   'tarih': formattedDate,
-      //   'süre': timer.tick,
-      // };
-      // firebaseRef.doc(formattedDate).set(resultsData);
+      CollectionReference firebaseRef = fireStore
+          .collection("Users")
+          .doc("ID")
+          .collection(FirebaseAuth.instance.currentUser.uid);
+      Map<String, dynamic> resultsData = {
+        'oyunTürü': "Ranked",
+        'kullanıcıAdi': widget.homekullaniciAdi,
+        'totalScore': _totalScore,
+        'elo': userElo,
+        'tarih': formattedDate,
+        'süre': timer.tick,
+      };
+      firebaseRef.doc(formattedDate).set(resultsData);
+
+      // elo güncelleme
       fireStore
           .collection('Person')
           .doc(FirebaseAuth.instance.currentUser.uid)
           .update({'elo': userElo});
-
-      // Map<String, dynamic> resultCevap = {
-      //   'totalscore': _totalScore,
-      //   'nick': widget.homekullaniciAdi,
-      //   '1': cevaplar[0],
-      //   '2': cevaplar[1],
-      //   '3': cevaplar[2],
-      //   '4': cevaplar[3],
-      //   '5': cevaplar[4],
-      //   '6': cevaplar[5],
-      //   '7': cevaplar[6],
-      //   '8': cevaplar[7],
-      //   '9': cevaplar[8],
-      //   '10': cevaplar[9],
-      // };
-      // fireStore
-      //     .collection("Games")
-      //     .doc("1")
-      //     .collection(FirebaseAuth.instance.currentUser.uid)
-      //     .doc('Answers')
-      //     .set(resultCevap);
     });
     // Sonuç ekranını açıyoruz
     Navigator.push(
@@ -166,19 +147,19 @@ class _HomeState extends State<Home> {
       isitcorrect = false;
     });
     // what happens at the end of the quiz
-    // if (_questionIndex >= _questions.length) {
-    //   _resetQuiz();
-    // }
+    if (_questionIndex >= _questions.length) {
+      _resetQuiz();
+    }
   }
 
-  // void _resetQuiz() {
-  //   setState(() {
-  //     _questionIndex = 0;
-  //     _totalScore = 0;
-  //     _scoreTracker = [];
-  //     endOfQuiz = false;
-  //   });
-  // }
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+      _scoreTracker = [];
+      endOfQuiz = false;
+    });
+  }
 
   double value = 0;
   int _counter;
@@ -289,9 +270,9 @@ class _HomeState extends State<Home> {
                   width: double.infinity,
                   height: 130.0,
                   margin:
-                      EdgeInsets.only(bottom: 10.0, left: 30.0, right: 30.0),
+                  EdgeInsets.only(bottom: 10.0, left: 30.0, right: 30.0),
                   padding:
-                      EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+                  EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
@@ -322,15 +303,15 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     margin:
-                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: (answerWasSelected)
                           ? (dogrucevap != 1)
-                              ? (selectedans == 1)
-                                  ? Colors.red
-                                  : Colors.white
-                              : Colors.green
+                          ? (selectedans == 1)
+                          ? Colors.red
+                          : Colors.white
+                          : Colors.green
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -356,15 +337,15 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     margin:
-                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: (answerWasSelected)
                           ? (dogrucevap != 2)
-                              ? (selectedans == 2)
-                                  ? Colors.red
-                                  : Colors.white
-                              : Colors.green
+                          ? (selectedans == 2)
+                          ? Colors.red
+                          : Colors.white
+                          : Colors.green
                           : Colors.white,
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(20.0),
@@ -391,15 +372,15 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     margin:
-                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
+                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: (answerWasSelected)
                           ? (dogrucevap != 3)
-                              ? (selectedans == 3)
-                                  ? Colors.red
-                                  : Colors.white
-                              : Colors.green
+                          ? (selectedans == 3)
+                          ? Colors.red
+                          : Colors.white
+                          : Colors.green
                           : Colors.white,
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(20.0),
