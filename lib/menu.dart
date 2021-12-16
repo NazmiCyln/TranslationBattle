@@ -309,7 +309,7 @@ class _KullaniciGecmisState extends State<KullaniciGecmis> {
             .collection("Users")
             .doc("ID")
             .collection(FirebaseAuth.instance.currentUser.uid)
-            .orderBy("elo", descending: true)
+            .orderBy("tarih", descending: true)
             .snapshots(),
         builder: (context, veriAl) {
           if (veriAl.connectionState == ConnectionState.waiting) {
@@ -654,7 +654,7 @@ class _achievementScreenState extends State<achievementScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF373855),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("Person").snapshots(),
+        stream: FirebaseFirestore.instance.collection("Person").orderBy("elo", descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -1803,6 +1803,507 @@ class _AvatarState extends State<Avatar> {
                     },
                     child: Image(
                       image: AssetImage("images/avatar32.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar33.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar33.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar34.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar34.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar35.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar35.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar36.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar36.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar37.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar37.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar38.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar38.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar39.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar39.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar40.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar40.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar41.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar41.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar42.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar42.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar43.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar43.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar44.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar44.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar45.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar45.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar46.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar46.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar47.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar47.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar48.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar48.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar49.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar49.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar50.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar50.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar51.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar51.png"),
+                      height: 150,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      fixedSize: Size(130, 130),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(55),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      authService.resimAl("avatar52.png").then((value) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => profileScreen()));
+                      });
+                    },
+                    child: Image(
+                      image: AssetImage("images/avatar52.png"),
                       height: 150,
                     ),
                     style: ElevatedButton.styleFrom(

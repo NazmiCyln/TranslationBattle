@@ -107,18 +107,18 @@ class _HomeState extends State<Home> {
 
       //  Kulanıcının test sonuçlarını firebase'e kaydediyoruz
       final fireStore = FirebaseFirestore.instance;
-      // CollectionReference firebaseRef = fireStore
-      //     .collection("Users")
-      //     .doc("ID")
-      //     .collection(FirebaseAuth.instance.currentUser.uid);
-      // Map<String, dynamic> resultsData = {
-      //   'kullanıcıAdi': widget.homekullaniciAdi,
-      //   'totalScore': _totalScore,
-      //   'elo': userElo,
-      //   'tarih': formattedDate,
-      //   'süre': timer.tick,
-      // };
-      // firebaseRef.doc(formattedDate).set(resultsData);
+      CollectionReference firebaseRef = fireStore
+          .collection("Users")
+          .doc("ID")
+          .collection(FirebaseAuth.instance.currentUser.uid);
+      Map<String, dynamic> resultsData = {
+        'kullanıcıAdi': widget.homekullaniciAdi,
+        'totalScore': _totalScore,
+        'elo': userElo,
+        'tarih': formattedDate,
+        'süre': timer.tick,
+      };
+      firebaseRef.doc(formattedDate).set(resultsData);
       fireStore
           .collection('Person')
           .doc(FirebaseAuth.instance.currentUser.uid)
