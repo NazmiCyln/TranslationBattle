@@ -13,6 +13,8 @@ import 'package:myfirsproje/ranks.dart';
 import 'package:myfirsproje/service/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'Finish.dart';
+
 class Menu extends StatefulWidget {
   String kullaniciAdi;
 
@@ -635,7 +637,21 @@ class infoScreen extends StatefulWidget {
 class _infoScreenState extends State<infoScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: ElevatedButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Finishh(
+                finishKullaniciAdi: "nzm",
+                totalScore: 10,
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -654,7 +670,10 @@ class _achievementScreenState extends State<achievementScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF373855),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("Person").orderBy("elo", descending: true).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("Person")
+            .orderBy("elo", descending: true)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -802,7 +821,7 @@ class _profileScreenState extends State<profileScreen> {
                           child: IconButton(
                             onPressed: () {
                               _authService.signOut();
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => GirisEkrani()));
@@ -818,7 +837,7 @@ class _profileScreenState extends State<profileScreen> {
                           padding: const EdgeInsets.fromLTRB(0, 13, 0, 30),
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Avatar()));
@@ -1024,7 +1043,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar1.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1045,7 +1064,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar2.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1074,7 +1093,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar3.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1095,7 +1114,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar4.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1124,7 +1143,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar5.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1145,7 +1164,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar6.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1174,7 +1193,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar7.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1195,7 +1214,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar8.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1224,7 +1243,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar9.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1245,7 +1264,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar10.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1274,7 +1293,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar11.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1295,7 +1314,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar12.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1324,7 +1343,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar13.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1345,7 +1364,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar14.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1374,7 +1393,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar15.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1395,7 +1414,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar16.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1424,7 +1443,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar17.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1445,7 +1464,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar18.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1474,7 +1493,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar19.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1495,7 +1514,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar20.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1524,7 +1543,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar21.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1545,7 +1564,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar22.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1574,7 +1593,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar23.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1595,7 +1614,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar24.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1624,7 +1643,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar25.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1645,7 +1664,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar26.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1674,7 +1693,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar27.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1695,7 +1714,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar28.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1724,7 +1743,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar29.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1745,7 +1764,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar30.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1774,7 +1793,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar31.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1795,7 +1814,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar32.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1816,7 +1835,6 @@ class _AvatarState extends State<Avatar> {
                 ],
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
               child: Row(
@@ -1825,7 +1843,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar33.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1846,7 +1864,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar34.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1875,7 +1893,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar35.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1896,7 +1914,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar36.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1925,7 +1943,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar37.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1946,7 +1964,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar38.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1975,7 +1993,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar39.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -1996,7 +2014,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar40.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2025,7 +2043,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar41.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2046,7 +2064,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar42.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2075,7 +2093,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar43.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2096,7 +2114,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar44.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2125,7 +2143,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar45.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2146,7 +2164,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar46.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2175,7 +2193,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar47.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2196,7 +2214,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar48.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2225,7 +2243,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar49.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2246,7 +2264,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar50.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2275,7 +2293,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar51.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));
@@ -2296,7 +2314,7 @@ class _AvatarState extends State<Avatar> {
                   ElevatedButton(
                     onPressed: () {
                       authService.resimAl("avatar52.png").then((value) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => profileScreen()));

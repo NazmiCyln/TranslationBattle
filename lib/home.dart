@@ -146,10 +146,10 @@ class _HomeState extends State<Home> {
       //     .set(resultCevap);
     });
     // Sonuç ekranını açıyoruz
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Finish(
+        builder: (context) => Finishh(
           finishKullaniciAdi: widget.homekullaniciAdi,
           totalScore: _totalScore,
         ),

@@ -130,7 +130,7 @@ class _rankedQueueState extends State<rankedQueue> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Finish(
+        builder: (context) => Finishh(
           finishKullaniciAdi: widget.homekullaniciAdi,
           totalScore: _totalScore,
         ),
