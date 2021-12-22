@@ -149,7 +149,7 @@ class _HomeState extends State<Home> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => Finishh(
+        builder: (context) => FinishNormal(
           finishKullaniciAdi: widget.homekullaniciAdi,
           totalScore: _totalScore,
         ),

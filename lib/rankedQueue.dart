@@ -8,9 +8,9 @@ import 'package:myfirsproje/Finish.dart';
 import 'package:myfirsproje/service/auth.dart';
 
 class rankedQueue extends StatefulWidget {
-  String homekullaniciAdi, odaID;
+  String user, homekullaniciAdi, odaID;
 
-  rankedQueue({this.homekullaniciAdi, this.odaID});
+  rankedQueue({this.user, this.homekullaniciAdi, this.odaID});
 
   @override
   _rankedQueueState createState() => _rankedQueueState();
@@ -49,13 +49,13 @@ class _rankedQueueState extends State<rankedQueue> {
       _scoreTracker.add(
         isitcorrect
             ? Icon(
-          Icons.check_circle,
-          color: Colors.green,
-        )
+                Icons.check_circle,
+                color: Colors.green,
+              )
             : Icon(
-          Icons.clear,
-          color: Colors.red,
-        ),
+                Icons.clear,
+                color: Colors.red,
+              ),
       );
       //  when the quiz ends
       if (_questionIndex + 1 == 10) {
@@ -73,6 +73,12 @@ class _rankedQueueState extends State<rankedQueue> {
 
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
+    // Testin bittiğini firebase e bildiriyoruz ve sonucları kaydediyoruz
+    FirebaseFirestore.instance.collection("Games").doc(widget.odaID).update({
+      widget.user + "testDurum": "bitti",
+      widget.user + "totalScore": _totalScore,
+      widget.user + "time": timer.tick
+    });
 
     FirebaseFirestore.instance
         .collection("Person")
@@ -80,52 +86,58 @@ class _rankedQueueState extends State<rankedQueue> {
         .get()
         .then((DocumentSnapshot ds) {
       userElo = ds["elo"];
-      if (_totalScore > 7) {
-        userElo = 5 + userElo;
-      } else {
-        userElo = userElo - 5;
-      }
-      //İki kullanıcı karşılaştırma ekranı
-      FirebaseFirestore.instance
-          .collection("Games")
-          .doc(widget.odaID)
-          .get()
-          .then((value) {
-        if (value[1]["totalScore"] > value[0]["totalScore"]) {
-          print("2. kullanıcı kazandı");
-        } else if (value[1]["totalScore"] == value[0]["totalScore"]) {
-          print("berabere");
-        } else
-          print("2. kullanıcı kazandı");
-      });
-      //Test bitince kullanılan oda siliniyor
-      // FirebaseFirestore.instance
-      //     .collection("Games")
-      //     .doc(FirebaseAuth.instance.currentUser.uid)
-      //     .delete();
-
-      //  Kulanıcının test sonuçlarını firebase'e kaydediyoruz
-      final fireStore = FirebaseFirestore.instance;
-      CollectionReference firebaseRef = fireStore
-          .collection("Users")
-          .doc("ID")
-          .collection(FirebaseAuth.instance.currentUser.uid);
-      Map<String, dynamic> resultsData = {
-        'oyunTürü': "Ranked",
-        'kullanıcıAdi': widget.homekullaniciAdi,
-        'totalScore': _totalScore,
-        'elo': userElo,
-        'tarih': formattedDate,
-        'süre': timer.tick,
-      };
-      firebaseRef.doc(formattedDate).set(resultsData);
-
-      // elo güncelleme
-      fireStore
-          .collection('Person')
-          .doc(FirebaseAuth.instance.currentUser.uid)
-          .update({'elo': userElo});
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => sonucHesaplama(
+                    user: widget.user,
+                    nick: widget.homekullaniciAdi,
+                    elo: userElo,
+                    odaID: widget.odaID,
+                  )));
     });
+
+    //İki kullanıcı karşılaştırma ekranı
+    // FirebaseFirestore.instance
+    //     .collection("Games")
+    //     .doc(widget.odaID)
+    //     .get()
+    //     .then((value) {
+    //   if (value[1]["totalScore"] > value[0]["totalScore"]) {
+    //     print("2. kullanıcı kazandı");
+    //   } else if (value[1]["totalScore"] == value[0]["totalScore"]) {
+    //     print("berabere");
+    //   } else
+    //     print("2. kullanıcı kazandı");
+    // });
+    // Test bitince kullanılan oda siliniyor
+    // FirebaseFirestore.instance
+    //     .collection("Games")
+    //     .doc(FirebaseAuth.instance.currentUser.uid)
+    //     .delete();
+
+    //  Kulanıcının test sonuçlarını firebase'e kaydediyoruz
+    // final fireStore = FirebaseFirestore.instance;
+    // CollectionReference firebaseRef = fireStore
+    //     .collection("Users")
+    //     .doc("ID")
+    //     .collection(FirebaseAuth.instance.currentUser.uid);
+    // Map<String, dynamic> resultsData = {
+    //   'oyunTürü': "Ranked",
+    //   'kullanıcıAdi': widget.homekullaniciAdi,
+    //   'totalScore': _totalScore,
+    //   'elo': userElo,
+    //   'tarih': formattedDate,
+    //   'süre': timer.tick,
+    // };
+    // firebaseRef.doc(formattedDate).set(resultsData);
+
+    // elo güncelleme
+    // fireStore
+    //     .collection('Person')
+    //     .doc(FirebaseAuth.instance.currentUser.uid)
+    //     .update({'elo': userElo});
+
     // Sonuç ekranını açıyoruz
     Navigator.push(
       context,
@@ -270,9 +282,9 @@ class _rankedQueueState extends State<rankedQueue> {
                   width: double.infinity,
                   height: 130.0,
                   margin:
-                  EdgeInsets.only(bottom: 10.0, left: 30.0, right: 30.0),
+                      EdgeInsets.only(bottom: 10.0, left: 30.0, right: 30.0),
                   padding:
-                  EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+                      EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
@@ -303,15 +315,15 @@ class _rankedQueueState extends State<rankedQueue> {
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     margin:
-                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: (answerWasSelected)
                           ? (dogrucevap != 1)
-                          ? (selectedans == 1)
-                          ? Colors.red
-                          : Colors.white
-                          : Colors.green
+                              ? (selectedans == 1)
+                                  ? Colors.red
+                                  : Colors.white
+                              : Colors.green
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -337,15 +349,15 @@ class _rankedQueueState extends State<rankedQueue> {
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     margin:
-                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: (answerWasSelected)
                           ? (dogrucevap != 2)
-                          ? (selectedans == 2)
-                          ? Colors.red
-                          : Colors.white
-                          : Colors.green
+                              ? (selectedans == 2)
+                                  ? Colors.red
+                                  : Colors.white
+                              : Colors.green
                           : Colors.white,
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(20.0),
@@ -372,15 +384,15 @@ class _rankedQueueState extends State<rankedQueue> {
                   child: Container(
                     padding: EdgeInsets.all(15.0),
                     margin:
-                    EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: (answerWasSelected)
                           ? (dogrucevap != 3)
-                          ? (selectedans == 3)
-                          ? Colors.red
-                          : Colors.white
-                          : Colors.green
+                              ? (selectedans == 3)
+                                  ? Colors.red
+                                  : Colors.white
+                              : Colors.green
                           : Colors.white,
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(20.0),
@@ -451,6 +463,230 @@ class _rankedQueueState extends State<rankedQueue> {
         );
       },
     );
+  }
+}
+
+class sonucHesaplama extends StatefulWidget {
+  int elo = 0;
+  String user, odaID = "", nick;
+
+  sonucHesaplama({this.user, this.elo, this.odaID, this.nick});
+
+  @override
+  _sonucHesaplamaState createState() => _sonucHesaplamaState();
+}
+
+class _sonucHesaplamaState extends State<sonucHesaplama> {
+  String bitisDurumu1 = "devam";
+  String bitisDurumu2 = "devam";
+  String u1Kazanma = "kaybetti";
+  String u2Kazanma = "kaybetti";
+  String user1ad, user2ad, user1resim, user2resim, user1time, user2time;
+  int user1score, user2score;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("Games")
+            .doc(widget.odaID)
+            .snapshots(),
+        builder: (context, veri) {
+          var alinan = veri.data;
+          bitisDurumu1 = alinan["user1testDurum"].toString();
+          bitisDurumu2 = alinan["user2testDurum"].toString();
+
+          user1ad = alinan["user1"];
+          user1resim = alinan["user1resim"];
+          user2ad = alinan["user2"];
+          user2resim = alinan["user2resim"];
+
+          // İki kullanıcının testtinin bitip bitmediği kontrol ediliyor.
+          // Daha sonra kimin kazanıldığı total skor ve ssüreye göre belirleniyor
+          if (bitisDurumu1 == "bitti") {
+            user1score = alinan["user1totalScore"];
+            user1time = alinan["user1time"];
+          }
+          if (bitisDurumu2 == "bitti") {
+            user2score = alinan["user2totalScore"];
+            user2time = alinan["user2time"];
+          }
+
+          if (bitisDurumu1 == "bitti" && bitisDurumu2 == "bitti") {
+            if (alinan["user1totalScore"] > alinan["user2totalScore"]) {
+              u1Kazanma = "kazandı";
+            }
+            if (alinan["user1totalScore"] < alinan["user2totalScore"]) {
+              u2Kazanma = "kazandı";
+            }
+            if (alinan["user1totalScore"] == alinan["user2totalScore"]) {
+              if (alinan["user1time"] > alinan["user2time"]) {
+                u2Kazanma = "kazandı";
+              }
+              if (alinan["user1time"] < alinan["user2time"]) {
+                u1Kazanma = "kazandı";
+              }
+              if (alinan["user1time"] == alinan["user2time"]) {
+                u1Kazanma = u2Kazanma = "berabere";
+              }
+            }
+            // kullanılan oda siliniyor
+            FirebaseFirestore.instance
+                .collection("Games")
+                .doc(widget.odaID)
+                .delete();
+          }
+
+          return Scaffold(
+            backgroundColor: Color(0xE2013865),
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(50, 200, 0, 0),
+                  child: Row(
+                    children: [
+                      Image.network(
+                        user1resim.toString(),
+                        height: 150,
+                        width: 150,
+                      ),
+                      Image.network(
+                        user2resim.toString(),
+                        height: 150,
+                        width: 150,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(80, 20, 0, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        user1ad,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      Text(
+                        user2ad,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(80, 20, 0, 0),
+                  child: Row(
+                    children: [
+                      (bitisDurumu1 == "bitti")
+                          ? Text(
+                              user1score.toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            )
+                          : CircularProgressIndicator(
+                              color: Colors.red, strokeWidth: 5),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      (bitisDurumu2 == "bitti")
+                          ? Text(
+                              user2score.toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            )
+                          : CircularProgressIndicator(
+                              color: Colors.red, strokeWidth: 5),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(80, 20, 0, 0),
+                  child: Row(
+                    children: [
+                      (bitisDurumu1 == "bitti")
+                          ? Text(
+                              user1time.toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            )
+                          : CircularProgressIndicator(
+                              color: Colors.red, strokeWidth: 5),
+                      SizedBox(
+                        width: 75,
+                      ),
+                      (bitisDurumu2 == "bitti")
+                          ? Text(
+                              user2time.toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            )
+                          : CircularProgressIndicator(
+                              color: Colors.red, strokeWidth: 5),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(80, 20, 0, 0),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                      ),
+                      (bitisDurumu1 == "bitti" && bitisDurumu2 == "bitti")
+                          ? u1Kazanma != "berabere"
+                              ? u1Kazanma == "kazandı"
+                                  ? Text("$user1ad kazandı")
+                                  : Text("$user2ad kazandı")
+                              : Text("berabere")
+                          : Text("Diğer kullanici bekleniyor")
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    (bitisDurumu1 == "bitti" && bitisDurumu2 == "bitti")
+                        ? ElevatedButton(
+                            onPressed: () {
+                              (widget.nick == user1ad)
+                                  ? Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Finishh(
+                                                finishKullaniciAdi: widget.nick,
+                                                totalScore: user1score,
+                                                kazan: u1Kazanma,
+                                                elo: widget.elo,
+                                              )))
+                                  : Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Finishh(
+                                                finishKullaniciAdi: widget.nick,
+                                                totalScore: user2score,
+                                                kazan: u2Kazanma,
+                                                elo: widget.elo,
+                                              )));
+                            },
+                            child: Text("Bitir"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF1A8B8B),
+                              fixedSize: (Size(75, 75)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(38),
+                              ),
+                            ),
+                          )
+                        : Text(""),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
   }
 }
 

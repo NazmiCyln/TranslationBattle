@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,9 +24,7 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, veri) {
           if (veri.hasData) {
-            return Menu(
-              kullaniciAdi: "asasdad",
-            );
+            return Menu();
           } else {
             return GirisEkrani();
           }
@@ -432,9 +429,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
                                     return Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => Menu(
-                                          kullaniciAdi: _emailController.text,
-                                        ),
+                                        builder: (context) => Menu(),
                                       ),
                                     );
                                   });

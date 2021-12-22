@@ -1,32 +1,23 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myfirsproje/home.dart';
 import 'package:myfirsproje/main.dart';
 import 'package:myfirsproje/rankedQueue.dart';
-import 'package:myfirsproje/ranks.dart';
 import 'package:myfirsproje/service/auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import 'Finish.dart';
 
 class Menu extends StatefulWidget {
-  String kullaniciAdi;
-
-  Menu({this.kullaniciAdi});
-
   @override
   _MenuState createState() => _MenuState();
 }
 
 class _MenuState extends State<Menu> {
   AuthService _authService = AuthService();
-  var mevcutKullanici = FirebaseAuth.instance.currentUser;
 
   var user = FirebaseAuth.instance.currentUser;
   var fireStore = FirebaseFirestore.instance;
@@ -64,7 +55,7 @@ class _MenuState extends State<Menu> {
         child: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Person")
-              .doc(mevcutKullanici.uid)
+              .doc(user.uid)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -146,7 +137,7 @@ class _MenuState extends State<Menu> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        circButton(FontAwesomeIcons.info, infoScreen()),
+                        circButton(FontAwesomeIcons.info, rankLaunchScreen()),
                         circButton(FontAwesomeIcons.medal, achievementScreen()),
                         circButton(FontAwesomeIcons.lightbulb, hintScreen()),
                         circButton(FontAwesomeIcons.cog, profileScreen()),
@@ -184,17 +175,66 @@ class _MenuState extends State<Menu> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            var odaID = sirayaGir(widget.kullaniciAdi);
-                            Duration(seconds: 3).inSeconds;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => rankedQueue(
-                                  homekullaniciAdi: widget.kullaniciAdi,
-                                  odaID: odaID,
-                                ),
-                              ),
-                            );
+                            var currentID =
+                                FirebaseAuth.instance.currentUser.uid;
+                            FirebaseFirestore.instance
+                                .collection("Games")
+                                .get()
+                                .then((data) {
+                              var readdata = data.docs;
+                              var odakurucuid;
+                              for (int i = 0; i < readdata.length; i++) {
+                                if (readdata[i]["odaVisiblity"] == true) {
+                                  odakurucuid = readdata[i]["odaID"];
+                                  FirebaseFirestore.instance
+                                      .collection("Games")
+                                      .doc(odakurucuid)
+                                      .update({
+                                    "odaVisiblity": false,
+                                    "user2": alinanVeri,
+                                    "user2resim": urlTutucu.toString(),
+                                    "user2totalScore": 0,
+                                    "user2time": 0,
+                                    "user2testDurum": "devam",
+                                  });
+                                  print(odakurucuid);
+                                  return Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              rankLaunchScreen(
+                                                user: "user2",
+                                                nick: alinanVeri,
+                                                odaID: odakurucuid,
+                                              )));
+                                }
+                              }
+                              FirebaseFirestore.instance
+                                  .collection("Games")
+                                  .doc(currentID)
+                                  .set({
+                                "odaID": currentID,
+                                "odaVisiblity": true,
+                                "user1": alinanVeri,
+                                "user2": "Waiting",
+                                "user1resim": urlTutucu.toString(),
+                                "user2resim": "bekle",
+                                "user1totalScore": 0,
+                                "user2totalScore": 0,
+                                "user1time": 0,
+                                "user2time": 0,
+                                "user1testDurum": "devam",
+                                "user2testDurum": "baslamadi",
+                              });
+                              return Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => rankLaunchScreen(
+                                            user: "user1",
+                                            nick: alinanVeri,
+                                            odaID: currentID,
+                                          )));
+                            });
                           },
                           child: modeButton('Ranks', 'Show ranks',
                               FontAwesomeIcons.couch, Color(0xFF45D280), width),
@@ -592,42 +632,6 @@ class _ChoiseLevelState extends State<ChoiseLevel> {
   }
 }
 
-String sirayaGir(nick) {
-  var currentID = FirebaseAuth.instance.currentUser.uid;
-  FirebaseFirestore.instance.collection("Games").get().then((data) {
-    var alinanVeri = data.docs;
-    var odakurucuid;
-    for (int i = 0; i < alinanVeri.length; i++) {
-      if (alinanVeri[i]["odaVisiblity"] == true) {
-        odakurucuid = alinanVeri[i]["odaID"];
-        FirebaseFirestore.instance
-            .collection("Games")
-            .doc(odakurucuid)
-            .collection(currentID)
-            .doc("answers")
-            .set({"finishtime": 0, "nick": nick, "totalScore": 0});
-
-        FirebaseFirestore.instance
-            .collection("Games")
-            .doc(odakurucuid)
-            .update({"odaVisiblity": false});
-        return odakurucuid;
-      }
-    }
-    FirebaseFirestore.instance
-        .collection("Games")
-        .doc(currentID)
-        .collection(currentID)
-        .doc("answers")
-        .set({"finishtime": 0, "nick": nick, "totalScore": 0});
-    FirebaseFirestore.instance
-        .collection("Games")
-        .doc(currentID)
-        .set({"odaID": currentID, "odaVisiblity": true});
-    return currentID;
-  });
-}
-
 // İnfo ekranı
 class infoScreen extends StatefulWidget {
   @override
@@ -639,7 +643,7 @@ class _infoScreenState extends State<infoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ElevatedButton(
-        onPressed: (){
+        onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -1010,6 +1014,116 @@ class _profileScreenState extends State<profileScreen> {
               ),
             );
           }
+        });
+  }
+}
+
+class rankLaunchScreen extends StatefulWidget {
+  String user, nick, odaID;
+
+  rankLaunchScreen({this.user, this.nick, this.odaID});
+
+  @override
+  _rankLaunchScreenState createState() => _rankLaunchScreenState();
+}
+
+class _rankLaunchScreenState extends State<rankLaunchScreen> {
+  var odaDurum;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection("Person").snapshots(),
+        builder: (context, veri2) {
+          return StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("Games")
+                  .doc(widget.odaID)
+                  .snapshots(),
+              builder: (context, veri) {
+                odaDurum = veri.data["odaVisiblity"].toString();
+                var user1 = veri.data["user1"].toString();
+                var user2 = veri.data["user2"].toString();
+                var user1resim = veri.data["user1resim"].toString();
+                var user2resim = veri.data["user2resim"].toString();
+                if (odaDurum == "false") {
+                  Future.delayed(
+                    Duration(milliseconds: 2500),
+                    () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => rankedQueue(
+                            user: widget.user,
+                            homekullaniciAdi: widget.nick,
+                            odaID: widget.odaID,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+
+                return Scaffold(
+                  backgroundColor: Color(0xE2013865),
+                  body: Column(
+                    children: [
+                      Text(odaDurum),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(50, 200, 0, 0),
+                        child: Row(
+                          children: [
+                            Image.network(
+                              (user1resim == "bekle")
+                                  ? "https://w7.pngwing.com/pngs/273/858/png-transparent-question-mark-computer-icons-exclamation-mark-desktop-question-mark-emoji-angle-text-logo.png"
+                                  : user1resim,
+                              height: 150,
+                              width: 150,
+                            ),
+                            Image.network(
+                              (user2resim == "bekle")
+                                  ? "https://w7.pngwing.com/pngs/273/858/png-transparent-question-mark-computer-icons-exclamation-mark-desktop-question-mark-emoji-angle-text-logo.png"
+                                  : user2resim,
+                              height: 150,
+                              width: 150,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(80, 20, 0, 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              user1,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Text(
+                              user2,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                        child: CircularProgressIndicator(
+                          color: Colors.red,
+                          strokeWidth: 5,
+                        ),
+                      ),
+                      Text((odaDurum == "true")
+                          ? "Kullanıcı Bekleniyor"
+                          : "Oyun birazdan başlayacak"),
+                    ],
+                  ),
+                );
+              });
         });
   }
 }
@@ -2303,6 +2417,7 @@ class _AvatarState extends State<Avatar> {
                       image: AssetImage("images/avatar51.png"),
                       height: 150,
                     ),
+
                     style: ElevatedButton.styleFrom(
                       primary: Colors.transparent,
                       fixedSize: Size(130, 130),
@@ -2336,6 +2451,29 @@ class _AvatarState extends State<Avatar> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Padding avatarButton(Image img) {
+    return Padding(
+      padding: EdgeInsets.all(0),
+      child: ElevatedButton(
+        onPressed: () {
+          authService.resimAl("");
+
+          },
+        child: Image(
+          image: AssetImage("img"),
+          height: 150,
+        ),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          fixedSize: Size(130, 130),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(55),
+          ),
         ),
       ),
     );
