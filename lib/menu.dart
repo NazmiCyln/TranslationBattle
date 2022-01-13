@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -12,10 +11,8 @@ import 'package:myfirsproje/home.dart';
 import 'package:myfirsproje/main.dart';
 import 'package:myfirsproje/rankedQueue.dart';
 import 'package:myfirsproje/service/auth.dart';
-import 'package:myfirsproje/soruEkleme.dart';
 import 'package:myfirsproje/timeTrial.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
 import 'Finish.dart';
 
 class Menu extends StatefulWidget {
@@ -28,6 +25,33 @@ class _MenuState extends State<Menu> {
 
   var user = FirebaseAuth.instance.currentUser;
   var fireStore = FirebaseFirestore.instance;
+  String infoGenel = "Translation Battle";
+  String infoGenel2 =
+      "Translation Battle is a translation game. It has 4 different game modes (Normal Game, Ranked Game,"
+      " Time Trial, Pass & Play) Play now to join the fun and competitive adventure that educates you while getting fun."
+      " Get more points to take higher place in the overall ranking.";
+  String infoNormal = "Normal Game";
+  String infoNormal2 =
+      "In Normal Game mode, You don't lose or gain any points. Main goal of this gamemode, getting more points than 8 in levels "
+      "that becomes more difficult each time. You level up for each lock you unlock.";
+  String infoRank = "Ranked Game";
+  String infoRank2 =
+      "Your goal in this game mode is to answer more questions than your opponent correctly. If both sides score equal points, "
+      "the winner will be the one who answers the question faster. "
+      "If both players answered the questions in equal time, it's a draw."
+      " Depending on the result of the game, you gain or lose elo points. Elo score determines your level."
+      "Play now and get points to take higher place in "
+      "Top List"
+      ".";
+  String infoTime = "Time Trial";
+  String infoTime2 =
+      "The goal of this game mode is to solve the maximum number of questions in the given time. answer random and increasingly difficult"
+      " questions as fast as possible.";
+  String infoPassPlay = "Pass & Play";
+  String infoPassPlay2 =
+      "You can challenge your friends in this game mode. Your scores are not affected in this mode. With your friends "
+      "in fun mode” "
+      "match and enjoy the game while you learn.";
 
   var usersRef = FirebaseFirestore.instance.collection("Person");
   var onlineRef = FirebaseDatabase.instance.ref('.info/connected');
@@ -61,8 +85,9 @@ class _MenuState extends State<Menu> {
           child: Stack(
             children: <Widget>[
               Container(
+                height: MediaQuery.of(context).size.height / 3 * 2,
                 padding:
-                    EdgeInsets.only(top: 100, bottom: 16, left: 16, right: 16),
+                    EdgeInsets.only(top: 50, bottom: 16, left: 16, right: 16),
                 margin: EdgeInsets.only(top: 16),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -75,44 +100,101 @@ class _MenuState extends State<Menu> {
                         offset: Offset(0.0, 10.0),
                       ),
                     ]),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Title",
-                      style: TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.w700),
+                child: SingleChildScrollView(
+                  child: Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          infoGenel,
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          infoGenel2,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          infoNormal,
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          infoNormal2,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          infoTime,
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          infoTime2,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          infoRank,
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          infoRank2,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Text(
+                          infoPassPlay,
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          infoPassPlay2,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Description",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: FlatButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Positioned(top: 20, child: Icon(FontAwesomeIcons.info)),
-              )
             ],
           ),
         );
@@ -1002,7 +1084,8 @@ class _ChoiseLevelState extends State<ChoiseLevel> {
             ];
             return Scaffold(
               backgroundColor: Color(0xFF303247),
-              body: SingleChildScrollView(
+              body: Scrollbar(
+                showTrackOnHover: true,
                 child: Column(
                   children: [
                     Padding(
@@ -1016,19 +1099,21 @@ class _ChoiseLevelState extends State<ChoiseLevel> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                      child: GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                          ),
-                          shrinkWrap: true,
-                          itemCount: levelNumber.length,
-                          itemBuilder: (context, levelindex) {
-                            return levelButton(levelNumber[levelindex],
-                                levelindex + 1, levels);
-                          }),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                        child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                            ),
+                            shrinkWrap: true,
+                            itemCount: levelNumber.length,
+                            itemBuilder: (context, levelindex) {
+                              return levelButton(levelNumber[levelindex],
+                                  levelindex + 1, levels);
+                            }),
+                      ),
                     ),
                   ],
                 ),

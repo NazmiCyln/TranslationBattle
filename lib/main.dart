@@ -11,6 +11,7 @@ import 'package:video_player/video_player.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(VideoApp());
 }
 
@@ -110,7 +111,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
                   child: Image.asset(
-                      "images/logo2.png",
+                    "images/logo2.png",
                     height: 150,
                   ),
                 ),
