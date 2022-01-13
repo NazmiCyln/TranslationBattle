@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthService {
@@ -21,8 +19,8 @@ class AuthService {
   }
 
   //kayıt ol fonksiyonu
-  Future<User> createPerson(String name, String nick, String email,
-      String password) async {
+  Future<User> createPerson(
+      String name, String nick, String email, String password) async {
     var user = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
@@ -33,9 +31,11 @@ class AuthService {
       'userName': name,
       'nick': nick,
       'email': email,
-      'elo': 200,
+      'elo': -100,
       'durum': false,
       'resim': resimYolu,
+      'level': 1,
+      "currentId": FirebaseAuth.instance.currentUser.uid,
     });
 
     return user.user;
@@ -44,7 +44,7 @@ class AuthService {
   Future<User> guncelle(String passwordU, String nick, String nameU) async {
     final user = await FirebaseAuth.instance.currentUser;
     final cred =
-    EmailAuthProvider.credential(email: user.email, password: "cccccc");
+        EmailAuthProvider.credential(email: user.email, password: "cccccc");
 
     user.reauthenticateWithCredential(cred).then((value) {
       user.updatePassword(passwordU).then((value) {
@@ -53,7 +53,7 @@ class AuthService {
     });
 
     DocumentReference veriGuncellemeYolu =
-    _firestore.collection("Person").doc(_auth.currentUser.uid);
+        _firestore.collection("Person").doc(_auth.currentUser.uid);
 
     Map<String, dynamic> guncellenecekVeri = {
       "userName": nameU,
@@ -66,23 +66,21 @@ class AuthService {
   }
 
   Future resimAl(String resim) async {
-    var data = await FirebaseStorage.instance.ref().child(resim);
-
-    var url = await data.getDownloadURL();
+    // var data = await FirebaseStorage.instance.ref().child(resim);
+    //
+    // var url = await data.getDownloadURL();
 
     _firestore
         .collection("Person")
         .doc(_auth.currentUser.uid)
-        .update({"resim": url});
+        .update({"resim": resim});
   }
 
-
-  Future resimUrl(String resimUrl) async {
-    var data = await FirebaseStorage.instance.ref().child(resimUrl);
-
-    var url = await data.getDownloadURL();
-
-    Image.network(url);
+  Future istatistikGncelle(int soruno, int istatistik) async {
+    int ist = istatistik + 1;
+    _firestore
+        .collection("Question")
+        .doc("$soruno")
+        .update({"istatistik": ist});
   }
-
 }

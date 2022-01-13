@@ -1,8 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cengizhancy.akwmdqk.myfirsproje">
+
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="myfirsproje"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Translation Battle"
+        android:usesCleartextTraffic="true"
+        android:icon="@mipmap/logo">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
